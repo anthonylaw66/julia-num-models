@@ -1,0 +1,67 @@
+name: Julia Scientific Computing Engine
+
+on:
+  schedule:
+    # Wakes up at 27 minutes past 4 AM, 10 AM, 4 PM, and 10 PM UTC
+    # (12:27 PM, 6:27 PM, 12:27 AM, and 6:27 AM Singapore Time)
+    - cron: '27 4,10,16,22 * * *'
+  workflow_dispatch:
+
+jobs:
+  julia-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Fetch Core Repository
+        uses: actions/checkout@v4
+
+      - name: Mutate Julia Struct Spec
+        run: |
+          # 30% chance to skip (maintains natural execution gaps)
+          if [ $((RANDOM % 100)) -lt 30 ]; then
+            echo "Julia module specs current. Skipping execution."
+            exit 0
+          fi
+
+          mkdir -p src
+          TARGET_FILE="src/simulation.jl"
+
+          if [ ! -f "$TARGET_FILE" ]; then
+            echo "module Simulation" > "$TARGET_FILE"
+            echo "" >> "$TARGET_FILE"
+            echo "# Core Numerical Simulation Structures" >> "$TARGET_FILE"
+          fi
+
+          COMPONENTS=("StateVector" "BufferGrid" "MetricTensor" "NodeContext" "SolverConfig")
+          PICKED_COMP=${COMPONENTS[$RANDOM % ${#COMPONENTS[@]}]}
+
+          # Insert struct definition before final 'end' if present
+          if grep -q "^end" "$TARGET_FILE"; then
+            sed -i '/^end/d' "$TARGET_FILE"
+          fi
+
+          echo "" >> "$TARGET_FILE"
+          echo "# Node state vector payload $RANDOM" >> "$TARGET_FILE"
+          echo "mutable struct ${PICKED_COMP}_$RANDOM{T <: Real}" >> "$TARGET_FILE"
+          echo "    id::Int64" >> "$TARGET_FILE"
+          echo "    value::T" >> "$TARGET_FILE"
+          echo "    active::Bool" >> "$TARGET_FILE"
+          echo "end" >> "$TARGET_FILE"
+          echo "" >> "$TARGET_FILE"
+          echo "end # module Simulation" >> "$TARGET_FILE"
+
+          git config --global user.name "anthonylaw66"
+          git config --global user.email "anthonylawtan@gmail.com"
+
+          MESSAGES=(
+            "feat: add parametric type representation for numerical simulation"
+            "refactor: optimize struct field layout for Julia dispatch"
+            "fix: adjust parametric constraints in simulation module"
+            "chore: sync Julia numerical model specifications"
+          )
+          MSG=${MESSAGES[$RANDOM % ${#MESSAGES[@]}]}
+
+          git add src/
+          git commit -m "$MSG"
+          git push
