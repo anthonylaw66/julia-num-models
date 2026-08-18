@@ -336,6 +336,13 @@ mutable struct SolverConfig_12364{T <: Real}
     id::Int64
     value::T
     active::Bool
+
+
+# Node state vector payload 9668
+mutable struct BufferGrid_10065{T <: Real}
+    id::Int64
+    value::T
+    active::Bool
 end
 
 end # module Simulation
