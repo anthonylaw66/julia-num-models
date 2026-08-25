@@ -483,6 +483,13 @@ mutable struct NodeContext_26057{T <: Real}
     id::Int64
     value::T
     active::Bool
+
+
+# Node state vector payload 16292
+mutable struct SolverConfig_8168{T <: Real}
+    id::Int64
+    value::T
+    active::Bool
 end
 
 end # module Simulation
