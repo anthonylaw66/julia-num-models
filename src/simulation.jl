@@ -833,6 +833,13 @@ mutable struct StateVector_730{T <: Real}
     id::Int64
     value::T
     active::Bool
+
+
+# Node state vector payload 22430
+mutable struct BufferGrid_4587{T <: Real}
+    id::Int64
+    value::T
+    active::Bool
 end
 
 end # module Simulation
