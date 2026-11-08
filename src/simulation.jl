@@ -1750,6 +1750,13 @@ mutable struct MetricTensor_21746{T <: Real}
     id::Int64
     value::T
     active::Bool
+
+
+# Node state vector payload 5929
+mutable struct BufferGrid_4841{T <: Real}
+    id::Int64
+    value::T
+    active::Bool
 end
 
 end # module Simulation
