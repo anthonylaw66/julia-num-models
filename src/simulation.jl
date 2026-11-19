@@ -1897,6 +1897,13 @@ mutable struct MetricTensor_1032{T <: Real}
     id::Int64
     value::T
     active::Bool
+
+
+# Node state vector payload 17225
+mutable struct NodeContext_4678{T <: Real}
+    id::Int64
+    value::T
+    active::Bool
 end
 
 end # module Simulation
